@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/currencydb
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+# Включаем кэш, если будем использовать CacheManager
+  cache:
+    type: simple
+
+# Настройка по умолчанию для комиссии (если не задана в БД)
+default:
+  conversion:
+    fee: 0.01
+
+# URL источника курсов валют
+ecb:
+  rates:
+    url: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
