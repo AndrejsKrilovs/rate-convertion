@@ -29,21 +29,28 @@ abstract class AbstractServlet : HttpServlet() {
       resp.status = defaultStatus
       mapper.writeValue(resp.writer, result)
     }
-    catch (kine: KotlinInvalidNullException) {
-      resp.status = HttpServletResponse.SC_BAD_REQUEST
-      mapper.writeValue(resp.writer, mapOf(messageConstant to "Отсутствует нужное поле формы"))
-    }
-    catch (nsee: NoSuchElementException) {
-      resp.status = HttpServletResponse.SC_NOT_FOUND
-      mapper.writeValue(resp.writer, mapOf(messageConstant to nsee.message))
-    }
-    catch (dre: DuplicateRequestException) {
-      resp.status = HttpServletResponse.SC_CONFLICT
-      mapper.writeValue(resp.writer, mapOf(messageConstant to dre.message))
-    }
-    catch (iae: IllegalArgumentException) {
-      resp.status = HttpServletResponse.SC_BAD_REQUEST
-      mapper.writeValue(resp.writer, mapOf(messageConstant to iae.message))
+    catch (ex: Exception) {
+      val (status, body) = exceptionHandlers[ex.javaClass]?.invoke(ex) ?:
+        (HttpServletResponse.SC_INTERNAL_SERVER_ERROR to mapOf(messageConstant to ex.message))
+
+      resp.status = status
+      mapper.writeValue(resp.writer, body)
     }
   }
+
+  private val exceptionHandlers: Map<Class<out Exception>, (Exception) -> Pair<Int, Any>> =
+    mapOf(
+      KotlinInvalidNullException::class.java to { _ ->
+        HttpServletResponse.SC_BAD_REQUEST to mapOf(messageConstant to "Отсутствует нужное поле формы")
+      },
+      IllegalArgumentException::class.java to { ex ->
+        HttpServletResponse.SC_BAD_REQUEST to mapOf(messageConstant to ex.message)
+      },
+      NoSuchElementException::class.java to { ex ->
+        HttpServletResponse.SC_NOT_FOUND to mapOf(messageConstant to ex.message)
+      },
+      DuplicateRequestException::class.java to { ex ->
+        HttpServletResponse.SC_CONFLICT to mapOf(messageConstant to ex.message)
+      }
+    )
 }
