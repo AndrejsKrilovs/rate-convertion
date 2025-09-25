@@ -1,42 +1,28 @@
 plugins {
+    application
     kotlin("jvm") version "2.1.10"
-    kotlin("plugin.spring") version "2.1.10"
-    kotlin("plugin.jpa") version "2.1.10"
-
-    id("org.springframework.boot") version "3.2.3"
-    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("kapt") version "2.2.20"
 }
-
-group = "krilovs.andrejs"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-cache")
-
-    runtimeOnly("org.postgresql:postgresql")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.mockito")
-    }
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
-    testImplementation("io.mockk:mockk:1.13.10")
-    testImplementation("org.assertj:assertj-core:3.25.1")
+application {
+    mainClass.set("krilovs.andrejs.app.Main")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(21)
+    charset("UTF-8")
+}
+
+dependencies {
+    implementation(kotlin("stdlib"))
+    kapt("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation("org.mapstruct:mapstruct:1.6.3")
+    implementation("org.eclipse.jetty:jetty-server:11.0.26")
+    implementation("org.eclipse.jetty:jetty-servlet:11.0.26")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.0")
 }
