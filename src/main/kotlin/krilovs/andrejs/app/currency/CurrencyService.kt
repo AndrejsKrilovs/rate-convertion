@@ -20,10 +20,9 @@ class CurrencyService {
         val codeKey = item.code.uppercase()
         val newCurrency = mapper
             .toDto(Currency.getInstance(codeKey))
-            .copy(id = idGenerator.getAndIncrement())
-        
-        val existing = currencies.putIfAbsent(codeKey, newCurrency)
-        if (Objects.nonNull(existing)) {
+            .copy(id = idGenerator.getAndIncrement(), name = item.name, sign = item.sign)
+
+        if (Objects.nonNull(currencies.putIfAbsent(codeKey, newCurrency))) {
             throw DuplicateRequestException("Валюта с кодом '$codeKey' уже существует")
         }
 

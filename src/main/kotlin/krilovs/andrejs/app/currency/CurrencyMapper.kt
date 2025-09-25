@@ -8,9 +8,9 @@ import java.util.Currency
 @Mapper
 interface CurrencyMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "code", source = "currencyCode")
-    @Mapping(target = "name", source = "displayName")
     @Mapping(target = "sign", source = "symbol")
+    @Mapping(target = "name", source = "displayName")
+    @Mapping(target = "code", source = "currencyCode")
     fun toDto(entity: Currency): CurrencyDto
 
     companion object {
