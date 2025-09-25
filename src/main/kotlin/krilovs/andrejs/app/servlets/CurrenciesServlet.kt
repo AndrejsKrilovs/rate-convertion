@@ -10,6 +10,7 @@ import krilovs.andrejs.app.currency.CurrencyDto
 import krilovs.andrejs.app.currency.CurrencyService
 
 class CurrenciesServlet: HttpServlet() {
+    private val messageConstant = "message"
     private val mapper = jacksonObjectMapper()
     private val currencyService = CurrencyService()
 
@@ -29,7 +30,7 @@ class CurrenciesServlet: HttpServlet() {
                 }
                 catch (nsee: NoSuchElementException) {
                     resp.status = HttpServletResponse.SC_NOT_FOUND
-                    var reasonMessage = mapOf("reason" to nsee.message)
+                    var reasonMessage = mapOf(messageConstant to nsee.message)
                     mapper.writeValue(resp.writer, reasonMessage)
                 }
             }
@@ -45,17 +46,17 @@ class CurrenciesServlet: HttpServlet() {
         }
         catch (kine: KotlinInvalidNullException) {
             resp.status = HttpServletResponse.SC_BAD_REQUEST
-            var reasonMessage = mapOf("reason" to "Отсутствует нужное поле формы")
+            var reasonMessage = mapOf(messageConstant to "Отсутствует нужное поле формы")
             mapper.writeValue(resp.writer, reasonMessage)
         }
         catch (iae: IllegalArgumentException) {
             resp.status = HttpServletResponse.SC_BAD_REQUEST
-            var reasonMessage = mapOf("reason" to "Неверно задан валютный код")
+            var reasonMessage = mapOf(messageConstant to "Неверно задан валютный код")
             mapper.writeValue(resp.writer, reasonMessage)
         }
         catch (dre: DuplicateRequestException) {
             resp.status = HttpServletResponse.SC_CONFLICT
-            var reasonMessage = mapOf("reason" to dre.message)
+            var reasonMessage = mapOf(messageConstant to dre.message)
             mapper.writeValue(resp.writer, reasonMessage)
         }
     }
