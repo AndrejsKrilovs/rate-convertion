@@ -14,7 +14,7 @@ class RateServlet : AbstractServlet() {
   override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
     handleRequest(resp) {
       val dto = req.reader.use { mapper.readValue(it, RateRequest::class.java) }
-      rateService.addRate(dto).also { resp.status = HttpServletResponse.SC_CONTINUE }
+      rateService.addRate(dto).also { resp.status = HttpServletResponse.SC_CREATED }
     }
   }
 }

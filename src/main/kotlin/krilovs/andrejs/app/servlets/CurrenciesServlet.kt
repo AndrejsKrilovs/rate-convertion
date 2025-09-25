@@ -17,9 +17,9 @@ class CurrenciesServlet : AbstractServlet() {
   }
 
   override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-    handleRequest(resp, HttpServletResponse.SC_CREATED) {
+    handleRequest(resp) {
       val dto = req.reader.use { mapper.readValue(it, CurrencyDto::class.java) }
-      currencyService.addCurrency(dto)
+      currencyService.addCurrency(dto).also { resp.status = HttpServletResponse.SC_CREATED }
     }
   }
 }
