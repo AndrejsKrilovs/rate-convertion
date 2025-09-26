@@ -6,6 +6,7 @@ import com.sun.jdi.request.DuplicateRequestException
 import jakarta.servlet.http.HttpServlet
 import jakarta.servlet.http.HttpServletResponse
 import krilovs.andrejs.app.currency.CurrencyService
+import krilovs.andrejs.app.exchange.ExchangeService
 import krilovs.andrejs.app.rate.RateService
 
 abstract class AbstractServlet : HttpServlet() {
@@ -13,10 +14,12 @@ abstract class AbstractServlet : HttpServlet() {
   protected val mapper = jacksonObjectMapper()
   protected lateinit var rateService: RateService
   protected lateinit var currencyService: CurrencyService
+  protected lateinit var exchangeService: ExchangeService
 
   override fun init() {
     rateService = servletContext.getAttribute("rateService") as RateService
     currencyService = servletContext.getAttribute("currencyService") as CurrencyService
+    exchangeService = servletContext.getAttribute("exchangeService") as ExchangeService
   }
 
   protected fun handleRequest(

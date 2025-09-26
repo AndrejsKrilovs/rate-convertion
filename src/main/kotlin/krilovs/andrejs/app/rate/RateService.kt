@@ -48,6 +48,16 @@ class RateService(private val currencyService: CurrencyService) {
   }
 
   fun changeRateForPair(pair: String, rate: Double): RateResponse {
-    return findExchangeRatePair(pair).copy(rate = rate)
+    val oldVal = findExchangeRatePair(pair)
+    if (rate <= 0) {
+      throw IllegalArgumentException("Курс должен быть больше 0")
+    }
+    if (rate == oldVal.rate) {
+      throw IllegalArgumentException("Новый курс не должен совпадать с текущим")
+    }
+
+    val result = oldVal.copy(rate = rate)
+    rates.replace(result.id, oldVal, result)
+    return result
   }
 }

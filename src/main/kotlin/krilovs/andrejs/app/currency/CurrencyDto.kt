@@ -1,8 +1,8 @@
 package krilovs.andrejs.app.currency
 
 data class CurrencyDto(
-    var id: Long,
-    var name: String,
-    var code: String,
-    var sign: String
+    val id: Long,
+    val name: String,
+    val code: String,
+    val sign: String
 )

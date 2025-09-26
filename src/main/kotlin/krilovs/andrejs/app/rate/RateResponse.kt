@@ -3,8 +3,8 @@ package krilovs.andrejs.app.rate
 import krilovs.andrejs.app.currency.CurrencyDto
 
 data class RateResponse(
-  var id: Long,
-  var baseCurrency: CurrencyDto,
-  var targetCurrency: CurrencyDto,
-  var rate: Double
+  val id: Long,
+  val baseCurrency: CurrencyDto,
+  val targetCurrency: CurrencyDto,
+  val rate: Double
 )
